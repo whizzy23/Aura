@@ -52,12 +52,14 @@ function AppContent() {
     >
       <AntApp>
         <div className="min-h-screen bg-gray-50">
-          <img
-            src="/logo.webp"
-            alt="AI Interview Assistant"
-            className="h-12 ml-8 mt-8"
-            loading="eager"
-          />
+          <div className="pl-8 pt-8">
+            <img
+              src="/logo.webp"
+              alt="AI Interview Assistant"
+              className="h-12"
+              loading="eager"
+            />
+          </div>
 
           <div className="container mx-auto px-4 py-6">
             <h1 className="text-3xl font-bold text-center text-gray-800">
