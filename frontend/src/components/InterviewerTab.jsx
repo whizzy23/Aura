@@ -200,7 +200,7 @@ const InterviewerTab = () => {
             </Card>
           )}
 
-          {/* Questions and Answers */}
+          {/* Questions, Answers, Scores, and Feedback */}
           {selectedCandidate.questions && selectedCandidate.answers && (
             <Card size="small">
               <Title level={4}>Interview Details</Title>
@@ -218,15 +218,23 @@ const InterviewerTab = () => {
                       )}
                     </div>
                     <Paragraph className="mb-2">{question}</Paragraph>
-                    <div className="bg-gray-50 p-3 rounded">
+                    <div className="bg-gray-50 p-3 rounded mb-2">
                       <Text strong className="text-green-600">
                         Answer:
                       </Text>
                       <Paragraph className="mt-1 mb-0">
-                        {selectedCandidate.answers[index] ||
-                          "No answer provided"}
+                        {selectedCandidate.answers[index] || "No answer provided"}
                       </Paragraph>
                     </div>
+                    {/* Feedback block */}
+                    {selectedCandidate.feedbacks && selectedCandidate.feedbacks[index] && (
+                      <div className="bg-yellow-50 p-3 rounded border-l-4 border-yellow-400">
+                        <Text strong className="text-yellow-700">Feedback:</Text>
+                        <Paragraph className="mt-1 mb-0 text-yellow-800">
+                          {selectedCandidate.feedbacks[index]}
+                        </Paragraph>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

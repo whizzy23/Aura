@@ -227,6 +227,7 @@ const ChatInterface = () => {
           if (!batch?.success) throw new Error(batch?.error || 'Batch evaluation failed');
           const answersArr = batch.transcripts || [];
           const scoresArr = (batch.evaluations || []).map(e => e?.score || 0);
+          const feedbacksArr = (batch.evaluations || []).map(e => e?.feedback || "");
 
           // Generate summary
           const allQuestions = preloadedQuestions.map(q => q.question);
@@ -238,7 +239,7 @@ const ChatInterface = () => {
           );
 
           // Update store and candidate
-          dispatch(setFinalResults({ answers: answersArr, scores: scoresArr }));
+          dispatch(setFinalResults({ answers: answersArr, scores: scoresArr, feedbacks: feedbacksArr }));
           dispatch(updateCandidate({
             id: currentCandidate.id,
             status: 'completed',
@@ -247,6 +248,7 @@ const ChatInterface = () => {
             questions: allQuestions,
             answers: answersArr,
             scores: scoresArr,
+            feedbacks: feedbacksArr,
             completedAt: new Date().toISOString()
           }));
           message.success('Interview completed successfully!');

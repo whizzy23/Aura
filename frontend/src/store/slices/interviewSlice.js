@@ -68,9 +68,10 @@ const interviewSlice = createSlice({
     },
     // After batch evaluation, set all answers and scores at once
     setFinalResults: (state, action) => {
-      const { answers, scores } = action.payload || {};
+      const { answers, scores, feedbacks } = action.payload || {};
       state.answers = answers || [];
       state.scores = scores || [];
+      state.feedbacks = feedbacks || [];
       state.isCompleted = true;
       state.isActive = false;
     },

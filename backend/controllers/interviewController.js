@@ -52,27 +52,29 @@ async function generateQuestions(req, res) {
       const difficulty = QUESTION_DIFFICULTY_BY_INDEX[i];
       try {
         const prompt = `
-				You are acting as a senior technical interviewer.
-				Generate one high-quality full-stack (React + Node) interview question.
+          You are acting as a senior technical interviewer.
+          Generate one high-quality technical interview question based on the candidate’s resume and relevant technical concepts.
 
-				Difficulty: ${difficulty}
-				Question number: Q${qNum} of 6
-				Candidate: ${JSON.stringify(candidateInfo || {})}
+          Difficulty: ${difficulty}
+          Question number: Q${qNum} of 6
+          Candidate: ${JSON.stringify(candidateInfo || {})}
 
-				Requirements:
-				• Frame the question as a realistic scenario that requires the candidate to verbally explain their approach.
-				• The problem must involve both React (frontend) and Node/Express (backend).
-				• The question should make the candidate talk about data flow, logic, performance, or edge cases.
-				• Avoid abstract system design prompts. The question must be answerable step by step in speech.
-				• No list format, no preamble, no code snippets.
-				• Output only the question as a single sentence or short paragraph.
-				• Word & sentence limits:
-				Easy: ≤20 words / 1 sentence
-				Medium: ≤35 words / 2 sentences
-				Hard: ≤60 words / 2 sentences
+          Requirements:
+          • Ensure all questions are unique; no duplicates across the set.
+          • Half of the questions should be based on the candidate’s projects, while the other half should test skills.
+          • For project-based questions, use realistic scenarios inspired by past work.
+          • For skill-based questions: easy questions should test fundamentals, medium should be tricky or conceptual, and hard can involve imaginary or complex scenarios.
+          • The question should prompt the candidate to verbally explain their approach, addressing data flow, logic, performance, integrations, or edge cases.
+          • Avoid abstract system-design prompts; it must be answerable step by step in speech.
+          • No list format, no preamble, no code snippets.
+          • Output only the question as a single sentence or short paragraph.
+          • Word & sentence limits:
+            Easy: ≤20 words / 1 sentence
+            Medium: ≤35 words / 2 sentences
+            Hard: ≤60 words / 2 sentences
 
-				Output ONLY the question.
-			`;
+          Output ONLY the question.
+			  `;
         const r = await model.generateContent(prompt);
         const question = (await r.response.text()).trim();
         if (!question) throw new Error("Empty question");
@@ -237,15 +239,15 @@ async function batchEvaluate(req, res) {
       }
       try {
         const prompt = `
-          You are an evaluator. Score the answer from 0 to 10 based on the following criteria:
-          1. Accuracy – Is the answer factually correct?
-          2. Completeness – Does it address all required parts of the question?
-          3. Approach – Is the reasoning or method appropriate for the problem?
-          4. Clarity – Is the answer easy to understand and well-structured?
-          5. Fit for Constraints – Is it appropriate for the given time limit (${timeLimitSeconds} seconds) and difficulty level (${difficulty})?
+          You are an evaluator. Score the answer from 0 (worst) to 10 (best) based on the following criteria:
+          1. Accuracy - Is the answer factually correct?
+          2. Completeness - Does it address all required parts of the question?
+          3. Approach - Is the reasoning or method appropriate for the problem?
+          4. Clarity - Is the answer easy to understand and well-structured?
+          5. Suitability for Constraints - Is it appropriate for the given time limit (${timeLimitSeconds} seconds) and difficulty level (${difficulty})?
 
-          Provide your response strictly in the following JSON format:
-          {"score": number, "feedback": "string"}
+          Provide your response strictly as valid JSON in the following format:
+          {"score": number, "feedback": "string (concise, actionable guidance for the interviewer on the candidate's performance)"}
 
           Here is the question and answer to evaluate:
 
